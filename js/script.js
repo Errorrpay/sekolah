@@ -1,128 +1,371 @@
-file:///storage/emulated/0/blog-fashion-sekolah/blog-fashion-sekolah/js/script.js/* =========================================================
-   FashioNest — script.js
-   Navigasi single-page tanpa reload + dropdown menu
-   ========================================================= */
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FashioNest — Catatan Gaya Seragam Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-document.addEventListener("DOMContentLoaded", function () {
-  var sections = document.querySelectorAll("[data-section]");
-  var navLinks = document.querySelectorAll("[data-target]");
-  var navbar = document.getElementById("navbar");
-  var navToggle = document.getElementById("navToggle");
-  var dropdownParents = document.querySelectorAll(".has-dropdown");
+<header class="masthead">
+  <div class="masthead__top">
+    <span class="masthead__eyebrow">Kolom Independen Fashion Sekolah</span>
+    <span class="masthead__eyebrow masthead__eyebrow--right">Edisi Nasional</span>
+  </div>
+  <div class="masthead__title-row">
+    <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="#" class="masthead__logo" data-target="beranda">Fashio<span>Nest</span></a>
+  </div>
 
-  /**
-   * Menampilkan satu section berdasarkan id, menyembunyikan sisanya.
-   */
-  function showSection(targetId) {
-    var found = false;
+  <nav class="navbar" id="navbar">
+    <ul class="navbar__menu">
+      <li><a href="#" class="navlink" data-target="beranda">Beranda</a></li>
 
-    sections.forEach(function (section) {
-      if (section.id === targetId) {
-        section.classList.add("is-active");
-        found = true;
-      } else {
-        section.classList.remove("is-active");
-      }
-    });
+      <li class="has-dropdown">
+        <a href="#" class="navlink" data-target="seragam-sd">Seragam</a>
+        <ul class="dropdown">
+          <li><a href="#" data-target="seragam-sd">Seragam SD</a></li>
+          <li><a href="#" data-target="seragam-smp">Seragam SMP</a></li>
+          <li><a href="#" data-target="seragam-sma">Seragam SMA/SMK</a></li>
+        </ul>
+      </li>
 
-    // Jika id tidak ditemukan, jatuhkan ke beranda sebagai fallback.
-    if (!found) {
-      var fallback = document.getElementById("beranda");
-      if (fallback) fallback.classList.add("is-active");
-      targetId = "beranda";
-    }
+      <li class="has-dropdown">
+        <a href="#" class="navlink" data-target="tas-sd">Tas</a>
+        <ul class="dropdown">
+          <li><a href="#" data-target="tas-sd">Tas SD</a></li>
+          <li><a href="#" data-target="tas-smp">Tas SMP</a></li>
+          <li><a href="#" data-target="tas-sma">Tas SMA/SMK</a></li>
+        </ul>
+      </li>
 
-    updateActiveNavLink(targetId);
-    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
-    closeMobileMenu();
-  }
+      <li class="has-dropdown">
+        <a href="#" class="navlink" data-target="sepatu-sd">Sepatu</a>
+        <ul class="dropdown">
+          <li><a href="#" data-target="sepatu-sd">Sepatu SD</a></li>
+          <li><a href="#" data-target="sepatu-smp">Sepatu SMP</a></li>
+          <li><a href="#" data-target="sepatu-sma">Sepatu SMA/SMK</a></li>
+        </ul>
+      </li>
 
-  /**
-   * Menandai link navbar utama (bukan dropdown) yang sedang aktif,
-   * berdasarkan kelompok kategori (seragam/tas/sepatu/aksesoris).
-   */
-  function updateActiveNavLink(targetId) {
-    var topLevelLinks = document.querySelectorAll(".navbar__menu > li > .navlink");
-    topLevelLinks.forEach(function (link) {
-      link.classList.remove("is-current");
-      var linkTarget = link.getAttribute("data-target");
-      if (!linkTarget) return;
+      <li class="has-dropdown">
+        <a href="#" class="navlink" data-target="aksesoris-ikatpinggang">Aksesoris</a>
+        <ul class="dropdown">
+          <li><a href="#" data-target="aksesoris-ikatpinggang">Ikat Pinggang</a></li>
+          <li><a href="#" data-target="aksesoris-dasi">Dasi</a></li>
+          <li><a href="#" data-target="aksesoris-topi">Topi</a></li>
+          <li><a href="#" data-target="aksesoris-kaoskaki">Kaos Kaki</a></li>
+          <li><a href="#" data-target="aksesoris-broslencana">Bros &amp; Lencana</a></li>
+        </ul>
+      </li>
 
-      var linkPrefix = linkTarget.split("-")[0];
-      var targetPrefix = targetId.split("-")[0];
+      <li><a href="#" class="navlink" data-target="tentang">Tentang</a></li>
+      <li><a href="#" class="navlink" data-target="kontak">Kontak</a></li>
+    </ul>
+  </nav>
+</header>
 
-      if (linkTarget === targetId || linkPrefix === targetPrefix) {
-        link.classList.add("is-current");
-      }
-    });
-  }
+<main id="main">
 
-  // Klik pada semua link yang memiliki data-target (navbar utama + dropdown + logo)
-  navLinks.forEach(function (link) {
-    link.addEventListener("click", function (event) {
-      event.preventDefault();
-      var targetId = link.getAttribute("data-target");
-      if (targetId) {
-        showSection(targetId);
-      }
-    });
-  });
+  <!-- BERANDA -->
+  <section class="article article--hero is-active" id="beranda" data-section>
+    <div class="article__meta">
+      <span>Pengantar Redaksi</span><span class="dot">•</span><span>Filosofi</span>
+    </div>
+    <h1 class="article__title">Seragam Bukan Sekadar Aturan, Melainkan Bahasa Visual Sebuah Generasi</h1>
+    <p class="lede">Di balik kancing yang sama dan potongan yang seragam, ada perbedaan senyap yang membedakan satu sekolah dengan sekolah lain, satu daerah dengan daerah lain, dan satu dekade dengan dekade sesudahnya.</p>
 
-  // ---------- Dropdown untuk perangkat sentuh / mobile ----------
-  // Di desktop, dropdown tetap muncul lewat CSS :hover.
-  // Di mobile, dropdown dibuka lewat klik pada menu utama (Seragam, Tas, dst).
-  dropdownParents.forEach(function (parent) {
-    var topLink = parent.querySelector(":scope > .navlink");
+    <p>Selama bertahun-tahun mengamati koridor sekolah dari Sabang sampai Merauke, satu hal yang selalu menarik perhatian saya adalah betapa seragam sekolah di Indonesia jauh lebih kaya daripada sekadar putih-merah, putih-biru, atau putih-abu. Ada logika tersembunyi di balik pemilihan bahan, potongan lengan, panjang rok, hingga cara siswa memodifikasi kecil-kecilan pakaian mereka agar tetap patuh aturan namun tetap punya identitas. Blog ini lahir dari rasa penasaran itu, dan dari keyakinan bahwa fashion sekolah layak dibicarakan seserius fashion jalanan atau fashion kantor.</p>
 
-    topLink.addEventListener("click", function (event) {
-      var isMobile = window.matchMedia("(max-width: 860px)").matches;
-      if (!isMobile) return; // biarkan klik langsung membuka artikel pertama di desktop
+    <p>Indonesia adalah negara dengan iklim tropis, populasi pelajar yang sangat besar, dan keragaman aturan sekolah yang luar biasa lebar—dari sekolah negeri dengan pedoman ketat Kementerian, sekolah swasta dengan seragam khas almamater, hingga sekolah berbasis agama dengan aturan busana tambahan. Ketiganya menghasilkan lanskap fashion yang tidak pernah benar-benar seragam meski namanya seragam. Di sinilah letak keasyikan mengulasnya: setiap detail kecil, mulai dari jenis kain hingga posisi saku, menyimpan cerita tentang iklim, ekonomi keluarga, budaya sekolah, dan bahkan tren generasi.</p>
 
-      event.preventDefault();
+    <p>Fokus blog ini dibagi mengikuti jenjang pendidikan—SD, SMP, dan SMA/SMK—karena kebutuhan dan karakter fashion di tiap jenjang sangat berbeda. Anak SD masih dalam fase eksplorasi motorik sehingga kepraktisan jauh lebih penting daripada gaya. Siswa SMP mulai sadar penampilan namun masih dibatasi kebijakan sekolah yang ketat. Sementara siswa SMA dan SMK, yang secara psikologis sedang membentuk identitas diri, kerap menjadikan seragam sebagai kanvas ekspresi—melalui cara melipat lengan, memilih sepatu, atau menambahkan aksesoris kecil yang tidak melanggar aturan namun tetap personal.</p>
 
-      var alreadyOpen = parent.classList.contains("is-open");
+    <p>Setiap artikel di sini ditulis berdasarkan pengamatan lapangan, obrolan dengan orang tua dan guru, serta studi kecil terhadap kebijakan seragam di berbagai daerah. Saya berusaha menghindari generalisasi kasar dan lebih senang membahas nuansa: mengapa satu bahan lebih disukai di daerah pesisir dibanding pegunungan, mengapa model tas berubah drastis sejak satu dekade terakhir, atau mengapa aturan panjang rok masih jadi perdebatan tak berkesudahan di banyak sekolah. Selamat menjelajah, dan semoga catatan-catatan ini membuat Anda melihat seragam sekolah dengan mata yang sedikit berbeda.</p>
+  </section>
 
-      // Tutup dropdown lain yang mungkin sedang terbuka
-      dropdownParents.forEach(function (p) {
-        p.classList.remove("is-open");
-      });
+  <!-- SERAGAM SD -->
+  <section class="article" id="seragam-sd" data-section>
+    <div class="article__meta"><span>Seragam</span><span class="dot">•</span><span>Jenjang SD</span></div>
+    <h1 class="article__title">Seragam Sekolah Dasar: Antara Kepraktisan dan Warna yang Membekas di Ingatan</h1>
+    <figure class="article__figure">
+      <img src="images/seragam-sd.jpg" alt="Ilustrasi siswa dan siswi SD mengenakan seragam putih-merah lengkap dengan topi dan dasi" loading="lazy">
+      <figcaption>Setelan putih-merah lengkap dengan topi identitas sekolah dasar.</figcaption>
+    </figure>
+    <p>Seragam SD di Indonesia punya identitas warna yang begitu kuat sehingga hampir setiap orang dewasa masih mengingatnya: putih dipadu merah untuk hari biasa, dan di banyak sekolah negeri ditambah setelan pramuka cokelat untuk hari Jumat atau Sabtu. Model dasarnya sederhana—kemeja lengan pendek untuk laki-laki, dan rok atau terusan untuk perempuan—namun kesederhanaan ini justru disengaja. Pada usia sekolah dasar, anak masih sangat aktif secara fisik, sehingga potongan longgar dan bahan yang tidak membatasi gerak menjadi prioritas utama dibanding detail estetika.</p>
 
-      if (!alreadyOpen) {
-        parent.classList.add("is-open");
-      }
-    });
-  });
+    <p>Dari segi bahan, mayoritas sekolah dasar negeri menggunakan katun campuran atau katun-poliester dengan gramasi ringan. Katun murni unggul dalam menyerap keringat dan nyaman di kulit anak yang masih sensitif, tetapi cenderung lebih cepat kusut dan menyusut setelah beberapa kali cuci. Campuran poliester mengatasi masalah itu—lebih tahan kusut, warnanya lebih awet, dan lebih terjangkau dari sisi harga produksi massal—namun daya serap keringatnya kalah dan bisa terasa panas jika dipakai seharian di ruang kelas tanpa pendingin udara yang memadai. Pemilihan bahan ini kerap menjadi pertimbangan tersembunyi orang tua saat membeli seragam di awal tahun ajaran.</p>
 
-  // ---------- Toggle menu hamburger (mobile) ----------
-  navToggle.addEventListener("click", function () {
-    var isOpen = navbar.classList.toggle("is-open");
-    navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-  });
+    <p>Aturan pemakaian seragam SD umumnya paling longgar dibanding jenjang lain dalam hal detail, namun paling ketat dalam hal kerapian dasar: baju harus dimasukkan, kaos kaki harus menutupi mata kaki, dan atribut seperti nama serta lambang sekolah wajib terpasang di posisi yang ditentukan. Variasi lokal cukup terasa: sekolah di kota besar sering menambahkan dasi kecil atau topi sebagai identitas tambahan, sementara sekolah di daerah dengan cuaca panas ekstrem kadang memberi kelonggaran berupa bahan yang lebih tipis atau model lengan yang sedikit lebih pendek.
 
-  function closeMobileMenu() {
-    navbar.classList.remove("is-open");
-    navToggle.setAttribute("aria-expanded", "false");
-    dropdownParents.forEach(function (p) {
-      p.classList.remove("is-open");
-    });
-  }
+    Menariknya, kebijakan ini jarang tertulis secara nasional dan lebih banyak bergantung pada keputusan masing-masing sekolah atau yayasan.</p>
 
-  // ---------- Formulir kontak (tampilan saja, tanpa backend) ----------
-  var contactForm = document.getElementById("contactForm");
-  var formNote = document.getElementById("formNote");
+    <p>Merawat seragam anak SD sebenarnya soal kebiasaan, bukan soal produk mahal. Mencuci segera setelah dipakai—terutama bagian kerah dan ujung lengan yang paling sering bersentuhan dengan keringat serta debu bermain—akan jauh memperpanjang usia pakai dibanding menumpuk cucian. Menyetrika dengan suhu sedang untuk bahan campuran poliester juga penting, karena panas berlebih bisa membuat kain mengilap dan terasa kaku. Banyak orang tua yang saya temui memilih membeli dua hingga tiga stel sekaligus di awal tahun untuk mengantisipasi pertumbuhan badan anak yang cepat pada usia ini.</p>
 
-  if (contactForm) {
-    contactForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      formNote.textContent =
-        "Pesan Anda telah disiapkan. Formulir ini masih berupa tampilan demo dan belum terhubung ke sistem pengiriman.";
-      contactForm.reset();
-    });
-  }
+    <p>Bila dibandingkan dengan SMP dan SMA, tren seragam SD relatif paling stabil dari tahun ke tahun—perubahan besar jarang terjadi karena fungsi seragam di jenjang ini lebih menitikberatkan identitas kolektif dan kepraktisan orang tua, bukan ekspresi individu anak. Perubahan yang ada biasanya kecil, seperti penambahan motif batik pada seragam hari tertentu atau penyesuaian bahan seiring makin banyaknya pilihan tekstil ramah anak di pasaran. Justru kestabilan inilah yang membuat seragam SD terasa begitu ikonik dan mudah dikenali lintas generasi.</p>
+  </section>
 
-  // Tampilkan section awal sesuai hash URL, atau beranda jika tidak ada.
-  var initialTarget = window.location.hash
-    ? window.location.hash.replace("#", "")
-    : "beranda";
-  showSection(initialTarget);
-});
+  <!-- SERAGAM SMP -->
+  <section class="article" id="seragam-smp" data-section>
+    <div class="article__meta"><span>Seragam</span><span class="dot">•</span><span>Jenjang SMP</span></div>
+    <h1 class="article__title">Seragam SMP: Fase Transisi Ketika Kesadaran Berpenampilan Mulai Tumbuh</h1>
+    <figure class="article__figure">
+      <img src="images/seragam-smp.jpg" alt="Ilustrasi siswa dan siswi SMP mengenakan seragam putih-biru dongker lengkap dengan topi dan dasi" loading="lazy">
+      <figcaption>Setelan putih-biru dongker khas jenjang SMP, dengan potongan yang mulai lebih terstruktur.</figcaption>
+    </figure>
+    <p>Beralih dari putih-merah ke putih-biru dongker adalah salah satu penanda transisi paling simbolis dalam perjalanan sekolah seorang anak Indonesia. Warna biru dongker yang lebih gelap dan model kemeja yang sedikit lebih terstruktur mencerminkan pergeseran ekspektasi: siswa SMP dianggap mulai bisa menjaga kerapian sendiri, sehingga potongan seragam pun mengikuti bentuk tubuh yang mulai berubah secara signifikan akibat masa pubertas awal.</p>
+
+    <p>Dari sisi material, era SMP adalah masa ketika perbedaan kualitas kain mulai terlihat jelas antar sekolah dan antar penjahit konveksi. Sebagian besar tetap menggunakan katun-poliester, tetapi mulai muncul varian yang disebut pedagang seragam sebagai "kain drill" atau "kain amunizen" untuk rok dan celana panjang, karena lebih tebal, jatuh dengan rapi, dan tidak mudah tembus pandang meski dipakai sepanjang hari. Kelebihan kain jenis ini adalah keawetan bentuknya; kekurangannya adalah bobot yang lebih berat sehingga kurang nyaman dipakai di daerah beriklim sangat panas dan lembap.</p>
+
+    <p>Aturan di jenjang SMP biasanya mulai menyentuh detail yang lebih personal: panjang rok di bawah lutut, larangan menggulung lengan kemeja secara berlebihan, hingga ketentuan warna dalaman yang boleh dikenakan di balik kemeja putih tipis. Di titik inilah negosiasi kecil antara siswa dan tata tertib sekolah mulai terjadi—rok yang dipendekkan sedikit dengan cara dilipat di pinggang, atau kemeja yang sengaja dipesan satu ukuran lebih pas, adalah bentuk ekspresi pertama yang muncul di usia remaja awal ini, jauh sebelum mereka mengenal fashion dalam arti yang lebih luas.</p>
+
+    <p>Memilih seragam SMP yang baik berarti memperhitungkan bahwa tubuh anak di usia ini masih akan berubah cukup drastis dalam satu hingga dua tahun ke depan. Banyak orang tua yang saya wawancarai sengaja membeli ukuran sedikit lebih besar di kelas tujuh, dengan pertimbangan bahwa penyesuaian jahitan jauh lebih murah dibanding membeli set baru setiap semester. Perawatan kain drill juga berbeda dari katun biasa: sebaiknya dicuci dengan air dingin dan dijemur terbalik agar warna birunya tidak cepat pudar terkena sinar matahari langsung.</p>
+
+    <p>Tren terbaru yang mulai saya amati di berbagai kota adalah semakin banyak sekolah swasta SMP yang mendesain seragam mereka sendiri dengan identitas warna khas almamater, alih-alih mengikuti standar putih-biru nasional. Ini menciptakan pasar konveksi seragam custom yang tumbuh pesat, sekaligus memberi ruang lebih besar bagi sekolah untuk membangun citra visual yang membedakan mereka dari sekolah lain—sesuatu yang jarang terjadi satu dekade lalu ketika keseragaman nasional masih jauh lebih dominan.</p>
+  </section>
+
+  <!-- SERAGAM SMA/SMK -->
+  <section class="article" id="seragam-sma" data-section>
+    <div class="article__meta"><span>Seragam</span><span class="dot">•</span><span>Jenjang SMA/SMK</span></div>
+    <h1 class="article__title">Seragam SMA dan SMK: Panggung Terakhir Sebelum Kebebasan Berpakaian</h1>
+    <figure class="article__figure">
+      <img src="images/seragam-sma.jpg" alt="Ilustrasi siswa dan siswi SMA mengenakan seragam putih-abu lengkap dengan topi, dasi, dan lencana kelas" loading="lazy">
+      <figcaption>Setelan putih-abu jenjang SMA/SMK, lengkap dengan lencana nama dan angkatan.</figcaption>
+    </figure>
+    <p>Seragam putih-abu adalah mungkin seragam paling dikenang sepanjang masa sekolah, bukan hanya karena warnanya, tetapi karena inilah fase ketika siswa punya ruang paling besar untuk memainkan detail: cara melipat lengan kemeja, memilih model dalaman, hingga menambahkan pin organisasi di dada. Di SMK, situasinya sedikit berbeda karena banyak jurusan memiliki seragam identitas jurusan atau bahkan seragam praktik kerja yang menyerupai pakaian kerja profesional, menjadikan fashion sekolah di jenjang ini jauh lebih beragam dibanding SD maupun SMP.</p>
+
+    <p>Bahan yang digunakan pada jenjang ini biasanya sudah mempertimbangkan aspek estetika, bukan sekadar fungsi. Kain oxford untuk kemeja mulai populer karena teksturnya yang sedikit bertekstur namun tetap terlihat rapi dan formal, berbeda dari katun polos yang terkesan lebih kasual. Untuk rok dan celana, kain twill atau drill premium menjadi favorit karena jatuhnya lebih tegas dan tidak mudah kusut meski dipakai seharian penuh mengikuti jadwal sekolah yang padat, termasuk ekstrakurikuler sore hari.</p>
+
+    <p>Aturan berpakaian di SMA/SMK sering menjadi arena tarik-ulur paling intens antara pihak sekolah dan siswa, khususnya soal panjang rok, kerapian rambut, dan penggunaan aksesoris tambahan seperti gelang atau kalung tipis. Tidak jarang sekolah menerbitkan pedoman detail hingga ke ukuran centimeter untuk lebar celana atau tinggi hak sepatu yang diizinkan. Di balik ketatnya aturan ini, muncul kreativitas siswa yang luar biasa dalam berekspresi dalam batas yang diizinkan—sesuatu yang menurut saya justru menjadi salah satu bentuk fashion paling menarik untuk diamati karena keterbatasannya sendiri.</p>
+
+    <p>Tips memadupadankan seragam di jenjang ini sebenarnya berputar pada satu prinsip: kerapian adalah bentuk gaya itu sendiri. Kemeja yang disetrika rapi, sepatu yang bersih, dan proporsi celana atau rok yang pas dengan bentuk tubuh akan selalu terlihat lebih baik dibanding modifikasi berlebihan yang justru melanggar aturan. Untuk perawatan, kain oxford dan twill sebaiknya dicuci terpisah dari pakaian berwarna gelap pada cuci pertama untuk mencegah luntur, dan disetrika dengan uap agar seratnya tidak rusak akibat panas kering yang berulang.</p>
+
+    <p>Dibanding dua jenjang sebelumnya, tren seragam SMA/SMK paling dinamis mengikuti budaya populer—mulai dari cara memakai jaket almamater di luar jam sekolah, hingga tren membuat seragam angkatan yang dimodifikasi khusus untuk acara perpisahan. Fenomena "seragam angkatan" ini bahkan berkembang menjadi industri kecil tersendiri, di mana desain kerah, warna aksen, dan bordir nama menjadi proyek kolektif yang melibatkan hampir seluruh siswa satu angkatan menjelang kelulusan.</p>
+  </section>
+
+  <!-- TAS SD -->
+  <section class="article" id="tas-sd" data-section>
+    <div class="article__meta"><span>Tas</span><span class="dot">•</span><span>Jenjang SD</span></div>
+    <h1 class="article__title">Tas Sekolah Dasar: Antara Karakter Kartun dan Beban di Punggung Kecil</h1>
+    <p>Tidak ada kategori fashion sekolah yang lebih dipengaruhi budaya pop selain tas anak SD. Ransel bergambar tokoh kartun, superhero, atau karakter animasi populer selalu mendominasi rak toko menjelang tahun ajaran baru, dan pilihan ini sepenuhnya masuk akal secara psikologis—anak usia enam hingga dua belas tahun memilih berdasarkan kesenangan visual, bukan pertimbangan ergonomi atau daya tahan bahan.</p>
+
+    <p>Dari segi model, ransel dengan dua tali bahu lebar tetap menjadi standar yang paling direkomendasikan dibanding tas selempang, karena mendistribusikan beban secara lebih merata ke kedua bahu. Bahan yang umum digunakan adalah poliester dengan lapisan anti air ringan di bagian luar, cukup untuk melindungi buku dari gerimis namun tidak benar-benar tahan hujan deras. Kelebihan poliester adalah bobotnya yang ringan dan harganya terjangkau, sementara kekurangannya terletak pada jahitan resleting yang kerap menjadi titik pertama kerusakan akibat pemakaian kasar khas anak-anak.</p>
+
+    <p>Banyak sekolah dasar tidak memiliki aturan ketat soal model atau warna tas, namun sejumlah sekolah swasta dan berbasis agama mulai mewajibkan tas polos berlogo sekolah demi keseragaman visual dan, menurut penuturan beberapa kepala sekolah, untuk mengurangi kesenjangan sosial yang bisa muncul dari perbedaan harga tas bermerek. Kebijakan ini terbilang progresif dan mulai diadopsi lebih luas terutama di sekolah-sekolah perkotaan dalam beberapa tahun terakhir.</p>
+
+    <p>Tips paling penting yang jarang diketahui orang tua adalah soal berat total tas dibanding berat badan anak—idealnya tidak melebihi sepuluh persen dari berat badan untuk mencegah gangguan postur pada usia pertumbuhan. Memilih ransel dengan bantalan busa pada bagian punggung dan tali bahu, serta membiasakan anak menggunakan kedua tali secara seimbang alih-alih menyampirkan di satu bahu, adalah kebiasaan kecil yang dampaknya baru terasa bertahun-tahun kemudian.</p>
+
+    <p>Tren tas SD dalam lima tahun terakhir bergeser dari sekadar gambar karakter menuju desain yang juga memperhatikan aspek kesehatan, dengan makin banyak produsen lokal menambahkan fitur ergonomis seperti rangka dalam yang lebih kaku dan sistem ventilasi di bagian punggung. Perubahan ini didorong oleh meningkatnya kesadaran orang tua urban akan pentingnya kesehatan tulang belakang anak, sesuatu yang jarang menjadi pertimbangan generasi orang tua sebelumnya.</p>
+  </section>
+
+  <!-- TAS SMP -->
+  <section class="article" id="tas-smp" data-section>
+    <div class="article__meta"><span>Tas</span><span class="dot">•</span><span>Jenjang SMP</span></div>
+    <h1 class="article__title">Tas SMP: Ketika Fungsi Mulai Berbagi Tempat dengan Gengsi</h1>
+    <p>Di jenjang SMP, tas mulai bertransformasi dari sekadar wadah buku menjadi penanda kelompok sosial. Ransel bermerek olahraga atau merek lokal yang sedang tren di kalangan remaja mulai menggantikan tas bergambar kartun, mencerminkan pergeseran identitas anak yang mulai ingin diterima dalam lingkaran pertemanan tertentu. Fenomena ini, meski terlihat sepele, sebenarnya adalah salah satu babak paling menarik dalam perkembangan psikologi sosial remaja awal Indonesia.</p>
+
+    <p>Bahan yang digunakan pada tas SMP umumnya naik satu tingkat dari segi ketahanan dibanding tas SD—kanvas tebal atau poliester dengan kerapatan benang lebih tinggi (biasa disebut denier lebih besar di industri tas) menjadi pilihan karena harus menampung lebih banyak buku pelajaran yang jauh lebih tebal. Kelebihannya adalah daya tahan terhadap gesekan dan robekan, namun kekurangannya adalah bobot tas kosong yang sudah lebih berat sebelum diisi buku, sehingga beban total di punggung siswa SMP kerap jauh melebihi ambang batas ideal.</p>
+
+    <p>Aturan sekolah soal tas di jenjang ini bervariasi luas: sebagian sekolah membiarkan siswa bebas memilih tas apa pun, sementara sekolah lain—terutama yang berasrama atau berbasis agama—mewajibkan tas ransel polos tanpa aksesoris gantungan yang dianggap mengganggu konsentrasi belajar. Larangan menggunakan tas selempang kecil bergaya kasual juga umum ditemui karena dianggap tidak cukup menampung perlengkapan sekolah yang lengkap.</p>
+
+    <p>Untuk memilih tas SMP yang tepat, pertimbangan utama seharusnya bukan merek melainkan sistem kompartemen: tas dengan pembagian ruang untuk buku, alat tulis, dan barang pribadi akan jauh lebih tahan lama karena beban tidak bertumpuk di satu titik yang mempercepat kerusakan jahitan. Merawat tas kanvas cukup dengan menyikat permukaan menggunakan sikat lembut dan menghindari mesin cuci, karena rangka dalam tas cenderung berubah bentuk jika terkena putaran mesin cuci berkecepatan tinggi.</p>
+
+    <p>Tren yang patut dicatat adalah menjamurnya tas dengan gantungan kunci, pin, atau boneka kecil sebagai bentuk personalisasi di jenjang SMP—sebuah kompromi menarik antara aturan sekolah yang membatasi kebebasan berpakaian dan kebutuhan remaja untuk tetap menunjukkan identitas personal. Selama beberapa tahun terakhir, aksesoris gantungan tas bahkan berkembang menjadi tren tersendiri yang diperjualbelikan secara terpisah dari tasnya sendiri di kalangan pelajar perkotaan.</p>
+  </section>
+
+  <!-- TAS SMA/SMK -->
+  <section class="article" id="tas-sma" data-section>
+    <div class="article__meta"><span>Tas</span><span class="dot">•</span><span>Jenjang SMA/SMK</span></div>
+    <h1 class="article__title">Tas SMA/SMK: Titik Temu Antara Gaya Kampus dan Kebutuhan Praktis</h1>
+    <p>Tas siswa SMA dan SMK sudah sangat mendekati preferensi tas mahasiswa atau bahkan pekerja muda—ransel dengan desain minimalis, tote bag kanvas, hingga tas selempang model messenger mulai bermunculan menggantikan ransel besar berkarakter yang identik dengan jenjang lebih muda. Pergeseran ini wajar karena siswa di usia ini mulai mengonsumsi referensi fashion dari media sosial dan figur publik yang usianya tidak jauh lebih tua dari mereka.</p>
+
+    <p>Dari sisi bahan, kanvas tebal dan nilon ripstop menjadi dua material paling diminati. Kanvas menawarkan kesan kasual-elegan yang cocok dipadukan dengan seragam formal, tetapi lebih berat saat basah dan butuh waktu pengeringan lebih lama. Nilon ripstop, sebaliknya, jauh lebih ringan dan tahan air, namun kesan visualnya lebih sporty dan kurang cocok untuk siswa yang menginginkan tampilan lebih rapi dan dewasa sesuai gaya seragam SMA yang cenderung formal.</p>
+
+    <p>Aturan sekolah pada jenjang ini umumnya lebih longgar dibanding SMP dalam hal pemilihan tas, kecuali untuk SMK dengan jurusan tertentu yang mewajibkan tas atau bahkan tool bag khusus praktik, misalnya jurusan otomotif atau tata boga yang memerlukan wadah alat kerja tersendiri di luar tas buku biasa. Kombinasi dua tas ini—satu untuk kebutuhan akademik dan satu untuk praktik—menjadi ciri khas fashion sekolah kejuruan yang jarang dibahas dalam diskusi seragam pada umumnya.</p>
+
+    <p>Memilih tas untuk siswa SMA/SMK sebaiknya mempertimbangkan mobilitas tinggi—banyak yang mengikuti ekstrakurikuler atau bimbingan belajar sepulang sekolah, sehingga tas perlu cukup fleksibel menampung buku tambahan tanpa merusak bentuk. Merawat tas kanvas dengan menyemprotkan pelapis anti air secara berkala akan memperpanjang usia pakai, sementara tas nilon cukup dilap dengan kain lembap tanpa perlu deterjen keras yang bisa merusak lapisan pelindung airnya.</p>
+
+    <p>Tren terbesar dalam lima tahun terakhir di jenjang ini adalah meningkatnya popularitas tas dengan desain polos bernuansa earth tone atau monokrom, menjauh dari warna-warna mencolok yang dulu populer. Pergeseran selera ini sejalan dengan tren fashion dewasa muda secara umum yang mengarah ke minimalisme, menunjukkan bahwa siswa SMA/SMK kini semakin cepat menyerap dan mengadaptasi tren fashion orang dewasa ke dalam kehidupan sekolah mereka.</p>
+  </section>
+
+  <!-- SEPATU SD -->
+  <section class="article" id="sepatu-sd" data-section>
+    <div class="article__meta"><span>Sepatu</span><span class="dot">•</span><span>Jenjang SD</span></div>
+    <h1 class="article__title">Sepatu SD: Prioritas pada Kenyamanan Kaki yang Masih Bertumbuh</h1>
+    <p>Sepatu hitam bertali adalah standar hampir universal di sekolah dasar Indonesia, dan alasan di baliknya lebih dari sekadar tradisi. Warna hitam dipilih karena netral dan mudah dipadukan dengan seragam apa pun, sementara model bertali memberi kontrol lebih baik terhadap kestabilan kaki anak yang masih dalam fase belajar keseimbangan motorik, dibanding model slip-on yang lebih longgar dan berisiko membuat kaki bergeser di dalam sepatu saat berlari.</p>
+
+    <p>Material yang digunakan biasanya kombinasi kanvas dan sintetis untuk bagian atas, dengan sol karet sebagai dasar. Kanvas memberi sirkulasi udara lebih baik yang penting mengingat anak SD sangat aktif bergerak sepanjang hari, namun daya tahannya terhadap air jauh lebih rendah dibanding sintetis. Sol karet dipilih karena daya cengkeramnya baik di lantai keramik sekolah yang licin, meski sol jenis ini cenderung lebih cepat aus dibanding sol berbahan EVA yang lebih ringan tapi kurang awet untuk pemakaian harian intens.</p>
+
+    <p>Hampir semua sekolah dasar mewajibkan warna hitam polos tanpa aksen mencolok, meski beberapa sekolah memberi kelonggaran untuk garis putih tipis di bagian sol sebagai identitas merek. Aturan ini biasanya ditegakkan lebih longgar dibanding aturan seragam, karena pihak sekolah menyadari bahwa daya tahan sepatu anak SD sangat singkat akibat aktivitas fisik yang tinggi, sehingga penggantian sepatu terjadi jauh lebih sering dibanding penggantian seragam.</p>
+
+    <p>Tips memilih sepatu SD yang paling sering saya sarankan kepada orang tua adalah selalu menyisakan ruang sekitar satu sentimeter di ujung sepatu untuk mengakomodasi pertumbuhan kaki, mengingat kaki anak usia ini bisa bertambah ukuran dua kali dalam setahun. Membiarkan anak mencoba langsung dan berjalan beberapa langkah di toko jauh lebih akurat dibanding hanya mengandalkan ukuran angka pada label, karena bentuk kaki setiap anak berbeda meski usianya sama.</p>
+
+    <p>Dari sisi tren, satu perubahan yang cukup terasa adalah makin banyak orang tua beralih ke sepatu dengan perekat velcro dibanding tali konvensional untuk anak kelas satu dan dua, demi kepraktisan dan melatih kemandirian anak memakai sepatu sendiri tanpa perlu bantuan mengikat tali. Sekolah pun umumnya tidak keberatan dengan perubahan ini selama warna dan desain dasar tetap sesuai aturan, menunjukkan fleksibilitas kebijakan seragam di jenjang SD yang lebih mengutamakan kepraktisan anak dibanding formalitas kaku.</p>
+  </section>
+
+  <!-- SEPATU SMP -->
+  <section class="article" id="sepatu-smp" data-section>
+    <div class="article__meta"><span>Sepatu</span><span class="dot">•</span><span>Jenjang SMP</span></div>
+    <h1 class="article__title">Sepatu SMP: Ketika Merek Mulai Menjadi Pertimbangan Serius</h1>
+    <p>Sepatu di jenjang SMP masih didominasi warna hitam sebagai aturan dasar, namun perbedaannya dengan jenjang SD terletak pada kesadaran merek yang mulai tumbuh kuat. Siswa SMP mulai memperhatikan detail seperti logo di samping sepatu atau model sol yang sedang populer di kalangan sebaya, meski secara aturan sekolah tetap mewajibkan warna hitam dominan tanpa aksen warna mencolok.</p>
+
+    <p>Dari segi bahan, kulit sintetis mulai menggantikan kanvas sebagai pilihan populer karena tampilannya lebih rapi dan formal, cocok dengan seragam biru dongker yang juga lebih terstruktur. Kulit sintetis unggul dalam hal ketahanan bentuk dan mudah dibersihkan hanya dengan lap basah, tetapi kurang menyerap keringat dibanding kanvas sehingga berisiko menyebabkan bau tidak sedap jika dipakai seharian tanpa kaos kaki yang menyerap kelembapan dengan baik.</p>
+
+    <p>Aturan sekolah SMP soal sepatu umumnya mulai mencantumkan detail spesifik seperti larangan sol tinggi atau platform, serta ketentuan bahwa tali sepatu harus terikat rapi dan bukan sekadar diselipkan sebagai gaya kasual yang sedang tren di kalangan remaja urban. Pelanggaran kecil seperti ini termasuk yang paling sering ditegur guru piket karena dianggap simbol ketidakrapian meski sebenarnya tidak mengganggu fungsi sepatu itu sendiri.</p>
+
+    <p>Memilih sepatu SMP yang baik berarti mempertimbangkan keseimbangan antara harga dan frekuensi penggantian, mengingat kaki remaja awal masih tumbuh meski tidak secepat usia SD. Membersihkan sepatu kulit sintetis secara rutin dengan sikat lembut dan menghindari perendaman langsung dalam air akan mencegah lapisan luar mengelupas, masalah umum yang sering dikeluhkan orang tua pada sepatu berbahan sintetis kualitas menengah ke bawah.</p>
+
+    <p>Tren yang menonjol di jenjang ini adalah meningkatnya permintaan terhadap sepatu dengan sol empuk bertipe memory foam meski secara tampilan tetap terlihat formal hitam polos, mencerminkan pergeseran prioritas remaja SMP masa kini yang mulai peduli pada kenyamanan jangka panjang, bukan sekadar penampilan sesaat—sebuah kesadaran yang jarang ditemui pada generasi siswa SMP satu atau dua dekade lalu.</p>
+  </section>
+
+  <!-- SEPATU SMA/SMK -->
+  <section class="article" id="sepatu-sma" data-section>
+    <div class="article__meta"><span>Sepatu</span><span class="dot">•</span><span>Jenjang SMA/SMK</span></div>
+    <h1 class="article__title">Sepatu SMA/SMK: Ruang Ekspresi Paling Bebas dalam Batas Formal</h1>
+    <p>Di antara semua elemen fashion sekolah, sepatu adalah area yang paling banyak dimainkan siswa SMA dan SMK untuk menunjukkan selera personal, meski tetap dalam koridor warna hitam yang diwajibkan hampir semua sekolah. Perbedaan model, mulai dari sepatu kanvas klasik, sepatu kulit formal, hingga sepatu olahraga hitam polos yang disamarkan sebagai sepatu sekolah, mencerminkan betapa beragamnya preferensi gaya di usia menjelang dewasa ini.</p>
+
+    <p>Bahan kulit asli maupun sintetis premium menjadi pilihan populer di jenjang ini karena kesannya yang lebih dewasa dan formal, sejalan dengan seragam putih-abu yang identik dengan kerapian. Kulit asli menawarkan daya tahan dan tampilan yang semakin bagus seiring waktu jika dirawat dengan benar, namun harganya jauh lebih tinggi dan perlu perawatan rutin dengan semir khusus. Sintetis premium menjadi alternatif dengan tampilan serupa namun perawatan lebih sederhana, meski usia pakainya cenderung lebih pendek dibanding kulit asli.</p>
+
+    <p>Aturan di jenjang SMA/SMK biasanya paling detail dibanding jenjang lain, mencakup ketentuan tinggi sol, larangan warna aksen selain hitam, hingga aturan spesifik untuk SMK jurusan tertentu yang mewajibkan sepatu safety atau sepatu tertutup penuh demi alasan keselamatan kerja saat praktik di bengkel maupun dapur produksi. Ketentuan keselamatan ini menjadikan sepatu SMK jurusan teknik memiliki standar yang jauh berbeda dari sepatu formal sekolah pada umumnya.</p>
+
+    <p>Tips merawat sepatu di jenjang ini sangat bergantung pada bahan yang dipilih: sepatu kulit sebaiknya disemir minimal seminggu sekali dan disimpan dengan shoe tree agar bentuknya tidak berubah, sementara sepatu kanvas cukup dicuci dengan sikat lembut dan dijemur di tempat teduh untuk mencegah warna hitam memudar akibat sinar matahari langsung yang berlebihan.</p>
+
+    <p>Tren paling menarik yang saya amati belakangan adalah semakin banyak siswa SMA yang memilih sepatu olahraga hitam polos tanpa logo mencolok sebagai kompromi antara kenyamanan gaya kasual dan kepatuhan pada aturan sekolah—sebuah strategi cerdas yang menunjukkan bagaimana batasan justru mendorong kreativitas dalam memilih produk yang tepat, bukan sekadar mematuhi aturan secara pasif.</p>
+  </section>
+
+  <!-- AKSESORIS: IKAT PINGGANG -->
+  <section class="article" id="aksesoris-ikatpinggang" data-section>
+    <div class="article__meta"><span>Aksesoris</span><span class="dot">•</span><span>Ikat Pinggang</span></div>
+    <h1 class="article__title">Ikat Pinggang Sekolah: Detail Kecil yang Sering Diabaikan, Padahal Penting</h1>
+    <p>Ikat pinggang hitam sederhana adalah salah satu elemen fashion sekolah yang paling jarang dibahas, padahal fungsinya jauh melampaui sekadar aksesoris tambahan. Bagi siswa SMP dan SMA yang mulai memakai celana panjang atau rok dengan model berpinggang longgar, ikat pinggang menjadi elemen fungsional yang menjaga kerapian keseluruhan penampilan sepanjang hari sekolah yang panjang dan penuh aktivitas.</p>
+
+    <p>Material yang umum digunakan adalah kulit sintetis dengan gesper logam sederhana berwarna perak atau hitam doff. Kulit sintetis dipilih karena harganya terjangkau dan cukup tahan lama untuk pemakaian harian, meski kualitas rendah cenderung retak di bagian lipatan setelah pemakaian intensif selama beberapa bulan. Gesper logam sebaiknya dipilih yang dilapis anti karat, mengingat keringat yang menempel setiap hari bisa mempercepat proses oksidasi pada logam berkualitas rendah.</p>
+
+    <p>Hampir seluruh sekolah di Indonesia mewajibkan warna hitam polos tanpa gesper besar atau berhiaskan logo mencolok, dengan alasan menjaga kesederhanaan penampilan. Beberapa sekolah bahkan menyediakan ikat pinggang khusus berlogo sekolah sebagai bagian dari paket seragam resmi yang dijual di koperasi, sehingga siswa tidak perlu mencari sendiri di luar dan keseragaman visual tetap terjaga dengan baik.</p>
+
+    <p>Tips memilih ikat pinggang sekolah yang tepat adalah memperhatikan panjang yang sesuai dengan lingkar pinggang, karena ikat pinggang yang terlalu panjang dan menjuntai justru terlihat kurang rapi meski warnanya sudah sesuai aturan. Merawatnya cukup dengan mengelap permukaan kulit sintetis secara berkala dan menghindari melipatnya terlalu tajam saat disimpan agar tidak meninggalkan garis retak permanen pada permukaan bahan.</p>
+
+    <p>Karena sifatnya yang fungsional dan sangat dibatasi aturan, tren pada ikat pinggang sekolah nyaris tidak berubah dari tahun ke tahun dibanding aksesoris lain. Perubahan yang ada biasanya hanya pada kualitas bahan yang makin membaik seiring makin banyaknya produsen lokal yang fokus memproduksi kebutuhan seragam sekolah secara khusus, bukan pada desain yang memang sengaja dijaga tetap sederhana dan tidak mencolok.</p>
+  </section>
+
+  <!-- AKSESORIS: DASI -->
+  <section class="article" id="aksesoris-dasi" data-section>
+    <div class="article__meta"><span>Aksesoris</span><span class="dot">•</span><span>Dasi</span></div>
+    <h1 class="article__title">Dasi Sekolah: Simbol Formalitas yang Menyimpan Banyak Variasi Tersembunyi</h1>
+    <p>Dasi sekolah, meski terlihat seragam dari kejauhan, sebenarnya menyimpan variasi yang cukup luas antar sekolah dan antar jenjang. Sebagian sekolah dasar dan menengah pertama mewajibkan dasi sebagai identitas tambahan di luar kemeja dan bawahan standar, sering kali dengan warna atau motif khusus yang mencerminkan almamater, sementara sekolah lain memilih tidak menyertakan dasi sama sekali sebagai bagian dari seragam resminya.</p>
+
+    <p>Dari segi bahan, dasi sekolah umumnya dibuat dari poliester dengan model dasi jadi berperekat velcro atau elastis di bagian belakang leher, berbeda dari dasi dewasa yang perlu diikat manual. Pilihan ini masuk akal secara praktis karena mempercepat proses berpakaian di pagi hari yang sering terburu-buru, meski dari segi keawetan bahan velcro cenderung mengendur setelah pemakaian bertahun-tahun dan perlu diganti lebih sering dibanding dasi ikat konvensional.</p>
+
+    <p>Aturan pemakaian dasi biasanya menyangkut kerapian simpul dan posisi—dasi harus terpasang lurus hingga kancing kedua kemeja, tidak boleh terlalu longgar hingga terlihat menjuntai berlebihan. Di beberapa sekolah, dasi juga menjadi penanda tingkatan kelas melalui warna garis atau lambang kecil yang berbeda di setiap jenjang, sebuah sistem yang cukup elegan untuk membedakan senioritas tanpa perlu label tambahan yang mencolok.</p>
+
+    <p>Merawat dasi berbahan poliester relatif mudah karena bahan ini cenderung tidak mudah kusut, cukup dilap jika terkena noda ringan tanpa perlu dicuci setiap hari seperti kemeja. Untuk dasi dengan model ikat manual yang mulai kembali dipakai di beberapa sekolah swasta, penting mengajarkan simpul dasar seperti simpul four-in-hand kepada siswa sejak dini agar tampilan tetap rapi tanpa bergantung pada bantuan orang tua setiap pagi.</p>
+
+    <p>Menariknya, penggunaan dasi sebagai bagian seragam justru mulai berkurang di banyak sekolah negeri dalam dua dekade terakhir, digantikan kebijakan seragam yang lebih sederhana tanpa dasi demi alasan kepraktisan dan biaya produksi. Sebaliknya, sejumlah sekolah swasta premium justru mempertahankan bahkan menghidupkan kembali tradisi dasi sebagai bagian dari citra formal dan prestise institusi mereka.</p>
+  </section>
+
+  <!-- AKSESORIS: TOPI -->
+  <section class="article" id="aksesoris-topi" data-section>
+    <div class="article__meta"><span>Aksesoris</span><span class="dot">•</span><span>Topi</span></div>
+    <h1 class="article__title">Topi Sekolah: Dari Wajib Upacara hingga Identitas Ekstrakurikuler</h1>
+    <p>Topi dalam konteks fashion sekolah Indonesia paling sering dikaitkan dengan seragam pramuka dan kegiatan upacara bendera, di mana topi baji atau topi rimba berwarna cokelat menjadi kelengkapan wajib yang harus dikenakan dengan sudut kemiringan tertentu sesuai aturan baris-berbaris. Di luar konteks itu, topi jarang menjadi bagian seragam harian, menjadikannya salah satu aksesoris paling situasional dibanding elemen fashion sekolah lainnya.</p>
+
+    <p>Material topi pramuka umumnya adalah kain drill tebal dengan bagian dalam berlapis agar mempertahankan bentuk kaku khasnya. Kelebihan bahan ini adalah kemampuannya menjaga struktur topi tetap presisi meski sering disimpan dalam tas, namun kekurangannya adalah topi jenis ini cukup sulit dibersihkan karena tidak bisa dicuci dengan mesin cuci tanpa merusak bentuk kaku yang menjadi ciri khasnya.</p>
+
+    <p>Aturan pemakaian topi pramuka cukup spesifik dan diajarkan langsung sebagai bagian dari pendidikan kepramukaan itu sendiri—mulai dari sudut kemiringan, posisi lambang di bagian depan, hingga tata cara melepas dan mengenakannya saat hormat bendera. Di luar kegiatan pramuka, beberapa sekolah juga mewajibkan topi khusus untuk kegiatan olahraga di lapangan terbuka sebagai perlindungan dari sinar matahari, biasanya dengan model yang jauh lebih santai berbahan katun ringan.</p>
+
+    <p>Merawat topi pramuka cukup dengan mengelap bagian luar menggunakan kain lembap dan menjemurnya di tempat teduh, sementara bagian dalam yang menyerap keringat sebaiknya dikeringkan dengan cara diangin-anginkan setelah dipakai agar tidak menimbulkan bau tidak sedap saat disimpan dalam waktu lama di antara jadwal kegiatan pramuka yang biasanya hanya seminggu sekali.</p>
+
+    <p>Karena sifatnya yang terikat erat dengan seragam pramuka nasional, topi sekolah relatif tidak mengalami perubahan tren yang signifikan dibanding aksesoris lain. Perbedaan yang muncul lebih banyak pada kualitas produksi dan bahan yang makin bervariasi harganya di pasaran, bukan pada perubahan desain, karena standar bentuk topi pramuka memang ditetapkan secara nasional dan jarang direvisi.</p>
+  </section>
+
+  <!-- AKSESORIS: KAOS KAKI -->
+  <section class="article" id="aksesoris-kaoskaki" data-section>
+    <div class="article__meta"><span>Aksesoris</span><span class="dot">•</span><span>Kaos Kaki</span></div>
+    <h1 class="article__title">Kaos Kaki Sekolah: Aksesoris Paling Sepele yang Ternyata Paling Sering Dilanggar</h1>
+    <p>Jika ada satu elemen seragam yang paling sering menjadi sasaran teguran guru piket, kaos kaki adalah jawabannya. Aturan tinggi kaos kaki—biasanya harus menutupi hingga betis untuk anak SD dan SMP, atau minimal menutupi mata kaki untuk siswa SMA—kerap dilanggar secara halus dengan memilih kaos kaki pendek bergaya kasual yang sedang populer di kalangan remaja perkotaan.</p>
+
+    <p>Bahan kaos kaki sekolah umumnya campuran katun dan spandeks tipis untuk elastisitas, dengan warna putih untuk kegiatan harian dan hitam untuk beberapa sekolah yang menerapkan aturan berbeda. Katun memberi kenyamanan dan daya serap keringat yang baik, sangat penting mengingat kaki tertutup sepatu sepanjang hari sekolah, sementara kandungan spandeks memastikan kaos kaki tidak melorot meski dipakai beraktivitas fisik seperti olahraga atau bermain saat istirahat.</p>
+
+    <p>Aturan panjang kaos kaki sebenarnya punya alasan lebih dari sekadar estetika—kaos kaki yang menutupi betis pada anak SD berfungsi melindungi kulit dari gesekan sepatu dan debu, sementara pada siswa SMA aturan minimal menutupi mata kaki lebih berkaitan dengan menjaga kesan formal keseluruhan penampilan. Meski begitu, banyak siswa tetap menyiasati aturan ini dengan kaos kaki yang bisa dilipat sesuai kebutuhan, rapi saat diperiksa namun nyaman saat tidak diawasi.</p>
+
+    <p>Memilih kaos kaki yang tepat berarti memperhatikan kandungan katun yang cukup tinggi, idealnya di atas tujuh puluh persen, untuk mencegah bau tidak sedap akibat keringat berlebih di dalam sepatu tertutup sepanjang hari. Mencuci kaos kaki putih terpisah dari pakaian berwarna gelap dan menghindari pemutih berlebihan juga penting agar warna putihnya tidak menguning seiring waktu, masalah umum yang sering dikeluhkan terutama pada kaos kaki kualitas rendah.</p>
+
+    <p>Tren terbaru pada kaos kaki sekolah adalah meningkatnya popularitas motif garis tipis di bagian atas sebagai identitas tambahan sekolah, mirip dengan strategi yang sama diterapkan pada dasi. Selain itu, beberapa produsen lokal mulai menawarkan kaos kaki dengan teknologi anti bau berbasis serat bambu, mencerminkan bagaimana bahkan aksesoris paling kecil dalam seragam sekolah pun ikut tersentuh inovasi tekstil modern.</p>
+  </section>
+
+  <!-- AKSESORIS: BROS & LENCANA -->
+  <section class="article" id="aksesoris-broslencana" data-section>
+    <div class="article__meta"><span>Aksesoris</span><span class="dot">•</span><span>Bros &amp; Lencana</span></div>
+    <h1 class="article__title">Bros dan Lencana: Aksesoris Identitas yang Paling Personal dalam Seragam</h1>
+    <p>Bros jilbab dan berbagai lencana organisasi adalah salah satu ruang paling personal dalam fashion sekolah Indonesia, terutama bagi siswi berjilbab yang menjadikan bros sebagai satu-satunya elemen dekoratif yang diperbolehkan di tengah seragam yang serba baku. Sementara itu, lencana OSIS, lencana kelas unggulan, atau lencana kepramukaan berfungsi sebagai penanda status dan pencapaian yang dikenakan dengan bangga di dada kiri seragam.</p>
+
+    <p>Material bros umumnya logam ringan berlapis warna emas atau perak dengan peniti di bagian belakang, sementara lencana organisasi biasanya berbahan logam dicetak timbul atau bordir kain yang dijahit permanen di seragam. Bros logam memiliki risiko menggores kain jilbab jika kualitas peniti rendah, sementara lencana bordir lebih awet namun sulit dipindahkan jika seragam perlu diganti karena rusak atau kekecilan.</p>
+
+    <p>Aturan mengenai bros bervariasi cukup luas—sebagian sekolah membatasi ukuran maksimal bros yang boleh dikenakan agar tidak dianggap berlebihan, sementara lencana organisasi biasanya diatur lebih ketat karena berkaitan dengan struktur formal organisasi siswa, bukan sekadar preferensi pribadi. Di banyak sekolah, memakai lencana OSIS tanpa hak atau jabatan yang sesuai bahkan bisa dianggap pelanggaran serius karena menyangkut kredibilitas struktur organisasi sekolah itu sendiri.</p>
+
+    <p>Tips memilih bros yang aman untuk jilbab adalah memastikan peniti berkualitas baik dengan pengunci ganda agar tidak mudah lepas saat beraktivitas, sekaligus memilih ukuran yang proporsional dengan luas jilbab agar tidak terlihat berat sebelah secara visual. Untuk lencana bordir, perawatan cukup dilakukan bersamaan dengan mencuci seragam, namun sebaiknya dibalik terlebih dahulu agar benang bordir tidak cepat aus akibat gesekan langsung dengan mesin cuci.</p>
+
+    <p>Tren bros dalam beberapa tahun terakhir bergeser dari model besar dan mencolok menuju desain minimalis berukuran kecil dengan sentuhan warna earth tone, sejalan dengan tren fashion muslimah secara umum yang semakin mengarah pada kesederhanaan elegan. Lencana organisasi, di sisi lain, relatif stabil dari segi desain karena fungsinya yang lebih formal dan terikat pada identitas kelembagaan yang tidak mudah berubah mengikuti tren musiman.</p>
+  </section>
+
+  <!-- TENTANG -->
+  <section class="article" id="tentang" data-section>
+    <div class="article__meta"><span>Tentang Kami</span><span class="dot">•</span><span>Profil Redaksi</span></div>
+    <h1 class="article__title">Tentang FashioNest</h1>
+    <p>FashioNest adalah ruang catatan independen yang berfokus secara khusus pada fashion dan atribut seragam sekolah di Indonesia, mulai dari jenjang sekolah dasar hingga sekolah menengah atas dan kejuruan. Blog ini dikelola oleh sekelompok penulis dengan latar belakang pengamatan budaya visual sekolah, yang percaya bahwa seragam sekolah adalah salah satu bentuk budaya berpakaian paling luas dampaknya di Indonesia, namun paling jarang dibicarakan secara serius.</p>
+
+    <p>Redaksi menulis setiap artikel berdasarkan pengamatan langsung, wawancara informal dengan orang tua, guru, dan siswa dari berbagai daerah, serta penelusuran kebijakan seragam di berbagai jenis sekolah—negeri, swasta, hingga berbasis agama. Pendekatan ini sengaja dipilih agar setiap pembahasan tidak hanya bersifat teoretis, tetapi juga mencerminkan realitas yang benar-benar terjadi di lapangan.</p>
+
+    <p>Kami percaya bahwa membicarakan seragam sekolah secara mendalam bukan berarti mendorong konsumerisme, melainkan membantu orang tua dan siswa membuat keputusan yang lebih baik—baik dari segi kenyamanan, daya tahan bahan, maupun kepatuhan terhadap aturan sekolah yang berlaku. Kami juga berusaha menyoroti aspek yang jarang dibahas media arus utama, seperti dampak berat tas terhadap postur anak atau dinamika sosial di balik pemilihan sepatu remaja.</p>
+
+    <p>Blog ini akan terus diperbarui secara berkala mengikuti perkembangan tren, kebijakan seragam baru, serta masukan dari pembaca yang memiliki pengalaman atau perspektif berbeda mengenai fashion sekolah di daerah masing-masing, mengingat keragaman kebijakan antar sekolah di Indonesia begitu luas dan tidak mungkin dirangkum secara tunggal.</p>
+  </section>
+
+  <!-- KONTAK -->
+  <section class="article" id="kontak" data-section>
+    <div class="article__meta"><span>Kontak</span><span class="dot">•</span><span>Hubungi Redaksi</span></div>
+    <h1 class="article__title">Hubungi Redaksi</h1>
+    <p>Punya cerita, koreksi, atau perspektif tentang fashion sekolah di daerah Anda? Redaksi FashioNest senang mendengar masukan pembaca. Isi formulir sederhana di bawah ini — formulir ini bersifat tampilan saja dan belum terhubung ke sistem pengiriman apa pun.</p>
+
+    <form class="contact-form" id="contactForm">
+      <div class="form-row">
+        <label for="namaLengkap">Nama</label>
+        <input type="text" id="namaLengkap" name="nama" placeholder="Nama lengkap Anda">
+      </div>
+      <div class="form-row">
+        <label for="emailKontak">Surel</label>
+        <input type="email" id="emailKontak" name="email" placeholder="nama@contoh.com">
+      </div>
+      <div class="form-row">
+        <label for="topikKontak">Topik</label>
+        <select id="topikKontak" name="topik">
+          <option>Seragam</option>
+          <option>Tas</option>
+          <option>Sepatu</option>
+          <option>Aksesoris</option>
+          <option>Lainnya</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="pesanKontak">Pesan</label>
+        <textarea id="pesanKontak" name="pesan" rows="5" placeholder="Tuliskan pesan Anda di sini"></textarea>
+      </div>
+      <button type="submit" class="form-submit">Kirim Pesan</button>
+      <p class="form-note" id="formNote"></p>
+    </form>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>FashioNest — Catatan editorial independen mengenai fashion seragam sekolah di Indonesia.</p>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
