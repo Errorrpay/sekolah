@@ -1,5 +1,5 @@
-/* =========================================================
-   Modewatch Sekolah — script.js
+file:///storage/emulated/0/blog-fashion-sekolah/blog-fashion-sekolah/js/script.js/* =========================================================
+   FashioNest — script.js
    Navigasi single-page tanpa reload + dropdown menu
    ========================================================= */
 
